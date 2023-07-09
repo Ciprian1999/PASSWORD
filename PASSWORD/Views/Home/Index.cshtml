@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Welcome to the Password Generator</h1>
+
+<div class="box">
+    <h2>Generated Password:</h2>
+    <p id="generatedPassword"></p>
+    <p id="countdown" style="display: none;"></p>
+</div>
+
+<div class="box">
+    <h2>Enter User ID:</h2>
+    <input type="text" id="userIdInput" onkeypress="handleKeyPress(event)" />
+    <button id="generateButton" onclick="generatePassword()">Generate Password</button>
+</div>
+
+<script>
+    var countdownInterval; // Variabila pentru a urmari daca numaratoarea inversa este in curs
+    var generateButton = document.getElementById("generateButton");
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (!countdownInterval) {
+                generatePassword();
+            }
+        }
+    }
+
+    function generatePassword() {
+        var userIdInput = document.getElementById("userIdInput");
+        var generatedPassword = document.getElementById("generatedPassword");
+        var countdown = document.getElementById("countdown");
+
+        if (!countdownInterval) {
+            var userId = userIdInput.value;
+            if (userId.trim() === '') {
+                return;
+            }
+
+            // Se face o cerere către server pentru a genera parola
+            fetch("/Password/GeneratePassword?userId=" + userId)
+                .then(response => response.text())
+                .then(password => {
+                    generatedPassword.innerText = password;
+                    countdown.innerText = "Password Expired!";
+                    countdown.style.display = "none";
+                    userIdInput.value = "";
+                    startCountdown();
+                });
+
+            // Se dezactiveaza input-ul pentru User ID si butonul "Generate Password"
+            userIdInput.disabled = true;
+            generateButton.disabled = true;
+        }
+    }
+
+    function startCountdown() {
+        var countdownElement = document.getElementById("countdown");
+        var countdownSeconds = 30;
+
+        // Se afiseaza elementul "countdown"
+        countdownElement.style.display = "block";
+        countdownElement.innerText = "Password Expires in " + countdownSeconds + " seconds";
+
+        countdownInterval = setInterval(function () {
+            countdownSeconds--;
+
+            // Se actualizeaza continutul elementului "countdown" cu timpul ramas
+            countdownElement.innerText = "Password Expires in " + countdownSeconds + " seconds";
+
+            if (countdownSeconds <= 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerText = "Password Expired!";
+                countdownElement.style.color = "red";
+                setTimeout(function () {
+                    countdownElement.style.display = "none";
+                    generatedPassword.innerText = "";
+                    userIdInput.disabled = false;
+                    generateButton.disabled = false;
+                    countdownInterval = null;
+                }, 2000);
+            }
+        }, 1000);
+    }
+</script>

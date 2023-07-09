@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f6f6f6;
+}
+
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.box {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    width: 200px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3d9cff;
+    color: #fff;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #1d7fe8;
+    }
+
+#generatedPassword {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+}
+
+#countdown {
+    font-size: 16px;
+    color: #ff4242;
+    margin-top: 10px;
+}
